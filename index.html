@@ -411,7 +411,13 @@
                                 </div>
                                 <div class="md:col-span-2">
                                     <label for="category" class="block text-sm font-medium text-slate-700 mb-1">Categoria</label>
-                                    <input type="text" id="category" name="category" value="${form.category}" required class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                                    <select id="category" name="category" required class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500">
+                                        <option value="" disabled ${form.category ? '' : 'selected'}>Selecione uma categoria</option>
+                                        <option value="Uber" ${form.category === 'Uber' ? 'selected' : ''}>Uber</option>
+                                        <option value="Alimentação" ${form.category === 'Alimentação' ? 'selected' : ''}>Alimentação</option>
+                                        <option value="Transportadoras" ${form.category === 'Transportadoras' ? 'selected' : ''}>Transportadoras</option>
+                                        <option value="Manutenção residencial" ${form.category === 'Manutenção residencial' ? 'selected' : ''}>Manutenção residencial</option>
+                                    </select>
                                 </div>
                                 <div>
                                     <label for="casa" class="block text-sm font-medium text-slate-700 mb-1">Número da Casa (opcional)</label>
