@@ -145,6 +145,7 @@
         let view = 'public';
         let adminLoggedIn = false;
         let searchTerm = '';
+        let selectedCategory = ''; // Nova variável para rastrear a categoria selecionada
         let form = { name: '', service: '', casa: '', contact: '', instagram: '', horario: '', category: '' };
         let editMode = false;
         let editProviderId = null;
@@ -244,11 +245,13 @@
             const providersListDiv = document.getElementById('providers-list');
             if (!providersListDiv) return;
 
-            const filteredProviders = providers.filter(provider =>
-                provider.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                provider.service.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                (provider.category && provider.category.toLowerCase().includes(searchTerm.toLowerCase()))
-            );
+            const filteredProviders = providers.filter(provider => {
+                const matchesSearch = provider.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                      provider.service.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                      (provider.category && provider.category.toLowerCase().includes(searchTerm.toLowerCase()));
+                const matchesCategory = !selectedCategory || (provider.category && provider.category === selectedCategory);
+                return matchesSearch && matchesCategory;
+            });
 
             const listHtml = filteredProviders.length > 0
                 ? filteredProviders.map(provider => `
@@ -299,9 +302,21 @@
                         </div>
                     </div>
                 `).join('')
-                : `<p class="col-span-full text-center text-slate-500 py-10">Nenhum serviço encontrado com o termo buscado.</p>`;
+                : `<p class="col-span-full text-center text-slate-500 py-10">Nenhum serviço encontrado para a categoria ou termo buscado.</p>`;
 
             providersListDiv.innerHTML = listHtml;
+
+            // Atualiza o estilo dos botões de categoria
+            const categoryButtons = document.querySelectorAll('.category-btn');
+            categoryButtons.forEach(btn => {
+                if (btn.dataset.category === selectedCategory) {
+                    btn.classList.add('bg-teal-600', 'text-white');
+                    btn.classList.remove('bg-slate-200', 'text-slate-600', 'hover:bg-slate-300');
+                } else {
+                    btn.classList.add('bg-slate-200', 'text-slate-600', 'hover:bg-slate-300');
+                    btn.classList.remove('bg-teal-600', 'text-white');
+                }
+            });
         }
 
         function renderPublicPage() {
@@ -322,7 +337,14 @@
                             class="w-full p-3 pl-10 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-colors duration-300 shadow-sm"
                         />
                     </div>
-                    <div id="providers-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="mb-8 flex flex-wrap gap-2 justify-center">
+                        <button class="category-btn px-4 py-2 rounded-lg font-semibold bg-slate-200 text-slate-600 hover:bg-slate-300 transition-colors duration-300" data-category="">Todos</button>
+                        <button class="category-btn px-4 py-2 rounded-lg font-semibold bg-slate-200 text-slate-600 hover:bg-slate-300 transition-colors duration-300" data-category="Uber">Uber</button>
+                        <button class="category-btn px-4 py-2 rounded-lg font-semibold bg-slate-200 text-slate-600 hover:bg-slate-300 transition-colors duration-300" data-category="Alimentação">Alimentação</button>
+                        <button class="category-btn px-4 py-2 rounded-lg font-semibold bg-slate-200 text-slate-600 hover:bg-slate-300 transition-colors duration-300" data-category="Transportadoras">Transportadoras</button>
+                        <button class="category-btn px-4 py-2 rounded-lg font-semibold bg-slate-200 text-slate-600 hover:bg-slate-300 transition-colors duration-300" data-category="Manutenção residencial">Manutenção residencial</button>
+                    </div>
+                    <div id="providers-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-9">
                     </div>
                 </main>
             `;
@@ -338,6 +360,16 @@
             } else {
                 console.error("Campo de busca não encontrado.");
             }
+
+            // Adiciona eventos de clique aos botões de categoria
+            const categoryButtons = document.querySelectorAll('.category-btn');
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    selectedCategory = button.dataset.category;
+                    renderProvidersList();
+                });
+            });
+
             renderProvidersList();
         }
 
@@ -357,7 +389,7 @@
                                     <input type="password" id="password" name="password" required class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" />
                                 </div>
                                 <p id="login-error-message" class="text-red-500 text-center text-sm hidden"></p>
-                                <button type="submit" class="w-full py-3 px-6 bg-teal-600 text-white font-bold rounded-lg shadow-md hover:bg-teal-700 transition-colors duration-300">
+                                <button type="submit" class="w-full py-3 px-6 bg-teal-600 ISBN 978-0-00-000000-0 text-white font-bold rounded-lg shadow-md hover:bg-teal-700 transition-colors duration-300">
                                     Entrar
                                 </button>
                             </form>
@@ -573,6 +605,7 @@
                 editMode = false;
                 editProviderId = null;
                 form = { name: '', service: '', casa: '', contact: '', instagram: '', horario: '', category: '' };
+                selectedCategory = ''; // Reseta a categoria ao mudar para a página pública
                 render();
             });
         } else {
