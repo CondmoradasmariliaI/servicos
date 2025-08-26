@@ -145,7 +145,7 @@
         let view = 'public';
         let adminLoggedIn = false;
         let searchTerm = '';
-        let selectedCategory = ''; // Nova variável para rastrear a categoria selecionada
+        let selectedCategory = '';
         let form = { name: '', service: '', casa: '', contact: '', instagram: '', horario: '', category: '' };
         let editMode = false;
         let editProviderId = null;
@@ -343,8 +343,12 @@
                         <button class="category-btn px-4 py-2 rounded-lg font-semibold bg-slate-200 text-slate-600 hover:bg-slate-300 transition-colors duration-300" data-category="Alimentação">Alimentação</button>
                         <button class="category-btn px-4 py-2 rounded-lg font-semibold bg-slate-200 text-slate-600 hover:bg-slate-300 transition-colors duration-300" data-category="Transportadoras">Transportadoras</button>
                         <button class="category-btn px-4 py-2 rounded-lg font-semibold bg-slate-200 text-slate-600 hover:bg-slate-300 transition-colors duration-300" data-category="Manutenção residencial">Manutenção residencial</button>
+                        <button class="category-btn px-4 py-2 rounded-lg font-semibold bg-slate-200 text-slate-600 hover:bg-slate-300 transition-colors duration-300" data-category="Advocacia">Advocacia</button>
+                        <button class="category-btn px-4 py-2 rounded-lg font-semibold bg-slate-200 text-slate-600 hover:bg-slate-300 transition-colors duration-300" data-category="Cuidados pessoais">Cuidados pessoais</button>
+                        <button class="category-btn px-4 py-2 rounded-lg font-semibold bg-slate-200 text-slate-600 hover:bg-slate-300 transition-colors duration-300" data-category="Venda de produtos">Venda de produtos</button>
+                        <button class="category-btn px-4 py-2 rounded-lg font-semibold bg-slate-200 text-slate-600 hover:bg-slate-300 transition-colors duration-300" data-category="Impressão">Impressão</button>
                     </div>
-                    <div id="providers-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-9">
+                    <div id="providers-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     </div>
                 </main>
             `;
@@ -389,7 +393,7 @@
                                     <input type="password" id="password" name="password" required class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" />
                                 </div>
                                 <p id="login-error-message" class="text-red-500 text-center text-sm hidden"></p>
-                                <button type="submit" class="w-full py-3 px-6 bg-teal-600 ISBN 978-0-00-000000-0 text-white font-bold rounded-lg shadow-md hover:bg-teal-700 transition-colors duration-300">
+                                <button type="submit" class="w-full py-3 px-6 bg-teal-600 text-white font-bold rounded-lg shadow-md hover:bg-teal-700 transition-colors duration-300">
                                     Entrar
                                 </button>
                             </form>
@@ -449,6 +453,10 @@
                                         <option value="Alimentação" ${form.category === 'Alimentação' ? 'selected' : ''}>Alimentação</option>
                                         <option value="Transportadoras" ${form.category === 'Transportadoras' ? 'selected' : ''}>Transportadoras</option>
                                         <option value="Manutenção residencial" ${form.category === 'Manutenção residencial' ? 'selected' : ''}>Manutenção residencial</option>
+                                        <option value="Advocacia" ${form.category === 'Advocacia' ? 'selected' : ''}>Advocacia</option>
+                                        <option value="Cuidados pessoais" ${form.category === 'Cuidados pessoais' ? 'selected' : ''}>Cuidados pessoais</option>
+                                        <option value="Venda de produtos" ${form.category === 'Venda de produtos' ? 'selected' : ''}>Venda de produtos</option>
+                                        <option value="Impressão" ${form.category === 'Impressão' ? 'selected' : ''}>Impressão</option>
                                     </select>
                                 </div>
                                 <div>
@@ -605,7 +613,7 @@
                 editMode = false;
                 editProviderId = null;
                 form = { name: '', service: '', casa: '', contact: '', instagram: '', horario: '', category: '' };
-                selectedCategory = ''; // Reseta a categoria ao mudar para a página pública
+                selectedCategory = '';
                 render();
             });
         } else {
